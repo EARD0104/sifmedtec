@@ -12,15 +12,13 @@
 
     <title>{{ config('app.name', 'sifmedtec') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -75,7 +73,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}" >
                                         Listado
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}" >
+                                    <a class="dropdown-item" href="/roles" >
                                         Roles
                                     </a>
 
@@ -109,5 +107,8 @@
             @yield('content')
         </main>
     </div>
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 </body>
 </html>

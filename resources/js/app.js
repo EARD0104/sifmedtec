@@ -9,13 +9,25 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VTooltip from 'v-tooltip'
+Vue.use(VTooltip)
+import CheckboxRadio from 'vue-checkbox-radio';
+Vue.use(CheckboxRadio);
+import Toastr from 'vue-toastr';
+require('vue-toastr/src/vue-toastr.scss');
+Vue.use(Toastr);
+
+
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('roles', require('./views/roles.vue'));
+Vue.component('modal', require('./components/Modal.vue'));
 
 const app = new Vue({
     el: '#app'

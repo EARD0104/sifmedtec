@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'api_token', 'role_id'
     ];
 
     /**
@@ -34,5 +34,20 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /* accessors */
+
+    public function scopeName($query)
+    {
+        if (request()->has('name'))
+        {
+            return $query->where('name', 'LIKE', '%'.request()->name.'%');
+        }
     }
 }

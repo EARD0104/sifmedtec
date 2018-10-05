@@ -18,5 +18,10 @@
         "lodash": "^4.17.5",
         "popper.js": "^1.12",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "v-tooltip": "^2.0.0-rc.33",
+        "vue-checkbox-radio": "^0.6.0",
+        "vue-toastr": "^2.0.14"
     }
 }
