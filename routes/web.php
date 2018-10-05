@@ -21,4 +21,5 @@ Auth::routes();
 Route::middleware(['auth'])->group(function ()
 {
     Route::view('roles', 'admin.roles');
+    Route::view('users', 'admin.users');
 });

@@ -22,6 +22,7 @@
     "dependencies": {
         "v-tooltip": "^2.0.0-rc.33",
         "vue-checkbox-radio": "^0.6.0",
+        "vue-select": "^2.5.1",
         "vue-toastr": "^2.0.14"
     }
 }

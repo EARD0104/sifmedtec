@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::name()->orderByDesc('id')->paginate();
+        $users = User::name()->orderByDesc('id')->with(['role'])->paginateIf();
         return UserResource::collection($users);
     }
 

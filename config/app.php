@@ -150,6 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
+        sifmedtec\Providers\MacroServiceProvider::class,
 
         /*
          * Application Service Providers...
