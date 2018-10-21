@@ -205,7 +205,9 @@ return [
         'category_id'             => 'categoria',
         'product_serie_id'                => 'serie',
         'offer_price'             => 'precio oferta',
-        'add_colors'              => 'Agregar Colores'
+        'add_colors'              => 'Agregar Colores',
+        'department_id' => 'departamento',
+        'city_id' => 'municipio'
     ],
 
 

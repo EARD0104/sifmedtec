@@ -23,4 +23,5 @@ Route::middleware(['auth'])->group(function ()
     Route::view('roles', 'admin.roles');
     Route::view('users', 'admin.users');
     Route::view('departments', 'admin.departments');
+    Route::view('cities', 'admin.cities');
 });

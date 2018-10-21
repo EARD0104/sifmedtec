@@ -71,7 +71,7 @@
                                 <a class="dropdown-item" href="/departments" >
                                     Departamentos
                                 </a>
-                                <a class="dropdown-item" href="" >
+                                <a class="dropdown-item" href="/cities" >
                                     Municipios
                                 </a>
                                 <a class="dropdown-item" href="" >
