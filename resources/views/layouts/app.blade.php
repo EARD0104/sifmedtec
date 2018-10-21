@@ -80,7 +80,7 @@
                                 <a class="dropdown-item" href="/areas" >
                                     Áreas
                                 </a>
-                                <a class="dropdown-item" href="" >
+                                <a class="dropdown-item" href="/questions" >
                                     Preguntas y respuestas
                                 </a>
                                 <a class="dropdown-item" href="" >

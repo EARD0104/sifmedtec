@@ -22,6 +22,11 @@ class QuestionController extends Controller
         return QuestionResource::collection($questions);
     }
 
+    public function show(Question $question)
+    {
+        return new QuestionResource($question);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

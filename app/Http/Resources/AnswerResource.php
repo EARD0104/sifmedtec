@@ -17,7 +17,8 @@ class AnswerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'question' => new QuestionResource($this->whenLoaded('question'))
+            'question' => new QuestionResource($this->whenLoaded('question')),
+            'is_the_answer' => $this->is_the_answer
         ];
     }
 }
