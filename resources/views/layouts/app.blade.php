@@ -46,27 +46,56 @@
                             </li>
                         @else
                         <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Administración <span class="caret"></span>
-                                </a>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Administración de grupos <span class="caret"></span>
+                            </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" >
-                                        Escuelas
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}" >
-                                        Áreas
-                                    </a>
-                                </div>
-                            </li>
-                            <li class="nav-item ">
-                                <a  class="nav-link " href="#" role="button"  v-pre>
-                                    Reportes <span class="caret"></span>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="" >
+                                    Gestion de grupos
                                 </a>
-                            </li>
+                                <a class="dropdown-item" href="" >
+                                    Evaluaciones
+                                </a>
+                                <a class="dropdown-item" href="" >
+                                    Planes de capacitación
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Catalogos <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="" >
+                                    Departamentos
+                                </a>
+                                <a class="dropdown-item" href="" >
+                                    Municipios
+                                </a>
+                                <a class="dropdown-item" href="" >
+                                    Escuelas
+                                </a>
+                                <a class="dropdown-item" href="" >
+                                    Áreas
+                                </a>
+                                <a class="dropdown-item" href="" >
+                                    Preguntas y respuestas
+                                </a>
+                                <a class="dropdown-item" href="" >
+                                    temas
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item ">
+                            <a  class="nav-link " href="#" role="button"  v-pre>
+                                Reportes <span class="caret"></span>
+                            </a>
+                        </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Usuarios <span class="caret"></span>
+                                    Administrador <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -76,7 +105,9 @@
                                     <a class="dropdown-item" href="/roles" >
                                         Roles
                                     </a>
-
+                                    <a class="dropdown-item" href="" >
+                                        Preferencias
+                                    </a>
                                 </div>
                             </li>
 
