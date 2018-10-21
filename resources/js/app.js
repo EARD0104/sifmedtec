@@ -30,6 +30,7 @@ Vue.component('roles', require('./views/roles.vue'));
 Vue.component('users', require('./views/users.vue'));
 Vue.component('departments', require('./views/departments.vue'));
 Vue.component('cities', require('./views/cities.vue'));
+Vue.component('areas', require('./views/areas.vue'));
 Vue.component('modal', require('./components/Modal.vue'));
 
 const app = new Vue({

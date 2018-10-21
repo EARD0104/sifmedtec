@@ -77,7 +77,7 @@
                                 <a class="dropdown-item" href="" >
                                     Escuelas
                                 </a>
-                                <a class="dropdown-item" href="" >
+                                <a class="dropdown-item" href="/areas" >
                                     Áreas
                                 </a>
                                 <a class="dropdown-item" href="" >
