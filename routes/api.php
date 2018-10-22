@@ -22,4 +22,5 @@ Route::middleware('auth:api')->group(function() {
     Route::resource('themes', 'ThemeController');
     Route::resource('questions', 'QuestionController');
     Route::resource('answers', 'AnswerController');
+    Route::resource('schools', 'SchoolController');
 });

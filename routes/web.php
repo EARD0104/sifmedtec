@@ -26,4 +26,6 @@ Route::middleware(['auth'])->group(function ()
     Route::view('cities', 'admin.cities');
     Route::view('areas', 'admin.areas');
     Route::view('questions', 'admin.questions');
+    Route::view('themes', 'admin.themes');
+    Route::view('schools', 'admin.schools');
 });

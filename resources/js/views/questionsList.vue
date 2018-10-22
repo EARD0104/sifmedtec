@@ -23,6 +23,7 @@
                                 <tr>
                                     <td>Id</td>
                                     <td>Nombre</td>
+                                    <td>Área</td>
                                     <td>Respuestas</td>
                                     <td></td>
                                 </tr>
@@ -31,6 +32,7 @@
                                 <tr v-for="question in questions" :key="question.id">
                                     <td>{{ question.id}}</td>
                                     <td>{{ question.name}}</td>
+                                    <td>{{ question.area.name}}</td>
                                     <td></td>
                                     <td>
                                         <button @click="show(question.id)" v-tooltip="'Detalles'" type="button" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button>

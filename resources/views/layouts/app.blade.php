@@ -74,7 +74,7 @@
                                 <a class="dropdown-item" href="/cities" >
                                     Municipios
                                 </a>
-                                <a class="dropdown-item" href="" >
+                                <a class="dropdown-item" href="/schools" >
                                     Escuelas
                                 </a>
                                 <a class="dropdown-item" href="/areas" >
@@ -83,51 +83,45 @@
                                 <a class="dropdown-item" href="/questions" >
                                     Preguntas y respuestas
                                 </a>
-                                <a class="dropdown-item" href="" >
-                                    temas
+                                <a class="dropdown-item" href="/themes" >
+                                    Temas
                                 </a>
                             </div>
                         </li>
-                        <li class="nav-item ">
-                            <a  class="nav-link " href="#" role="button"  v-pre>
-                                Reportes <span class="caret"></span>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Administrador <span class="caret"></span>
                             </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/users" >
+                                    Usuarios
+                                </a>
+                                <a class="dropdown-item" href="/roles" >
+                                    Roles
+                                </a>
+                                <a class="dropdown-item" href="" >
+                                    Preferencias
+                                </a>
+                            </div>
                         </li>
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Administrador <span class="caret"></span>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Salir') }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/users" >
-                                        Listado
-                                    </a>
-                                    <a class="dropdown-item" href="/roles" >
-                                        Roles
-                                    </a>
-                                    <a class="dropdown-item" href="" >
-                                        Preferencias
-                                    </a>
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Salir') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>

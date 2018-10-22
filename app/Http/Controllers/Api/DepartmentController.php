@@ -19,6 +19,7 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         $departmens = Department::name()->orderByDesc('id')->paginateIf();
+
         return DepartmentResource::collection($departmens);
     }
 

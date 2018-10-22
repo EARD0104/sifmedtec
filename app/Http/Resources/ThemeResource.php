@@ -17,7 +17,8 @@ class ThemeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'area' => new AreaResource($this->whenLoaded('area'))
+            'area' => new AreaResource($this->whenLoaded('area')),
+            'description' => $this->description
         ];
     }
 }
