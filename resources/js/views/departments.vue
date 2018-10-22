@@ -11,6 +11,13 @@
                     </div>
 
                     <div class="card-body">
+                        <div class="input-group mb-12">
+                            <input type="text" v-model="filter.name" class="form-control" placeholder="buscar" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button @click="index" class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                        <br>
                         <table class="table">
                             <thead>
                                 <tr>
