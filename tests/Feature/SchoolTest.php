@@ -50,7 +50,6 @@ class SchoolTest extends TestCase
 
     function test_store_school()
     {
-        $this->withoutExceptionHandling();
 
         $this->actingAs($this->defaultUser(), 'api');
         $school = factory(School::class)->make();
@@ -80,6 +79,7 @@ class SchoolTest extends TestCase
 
     function test_validate_unique_name_on_store_school()
     {
+
         $this->actingAs($this->defaultUser(), 'api');
         factory(School::class)->create(['name' => 'Hardware']);
 
@@ -92,47 +92,52 @@ class SchoolTest extends TestCase
             ]);
     }
 
-    function test_validate_store_school()
-    {
-        $this->actingAs($this->defaultUser(), 'api');
-
-        $params = [];
-
-        $this->postJson('/api/schools', $params)
-            ->assertStatus(422)
-            ->assertJson([
-                'errors' => ['name' => ['El campo nombre es obligatorio.']]
-            ]);
-    }
-
     function test_update_school()
     {
          $this->actingAs($this->defaultUser(), 'api');
-         $theme = factory(School::class)->create(['name' => 'Hardware']);
+         $school= factory(School::class)->create(['name' => 'Hardware']);
+         $data = factory(School::class)->make();
 
          $params = [
-            'name' => 'Politica',
-            'area_id' =>  $theme->area_id
+            'name'            => $data->name,
+            'city_id'         => $data->city_id,
+            'principal_name'  => $data->principal_name,
+            'principal_phone' => $data->principal_phone,
+            'principal_email' => $data->principal_email,
+            'phone'           => $data->phone,
+            'other_phone'     => $data->other_phone,
+            'teachers'        => $data->teachers,
+            'email'           => $data->email,
         ];
 
-         $this->putJson('/api/schools/'.$theme->id, $params)
+         $this->putJson('/api/schools/'.$school->id, $params)
             ->assertStatus(200)
             ->assertJson([
-                'data' => ['name' => 'Politica']
+                'data' => ['name' => $data->name]
             ]);
 
-        $this->assertDatabaseHas('schools', ['name' => 'Politica']);
+        $this->assertDatabaseHas('schools', [
+            'name'            => $data->name,
+            'city_id'         => $data->city_id,
+            'principal_name'  => $data->principal_name,
+            'principal_phone' => $data->principal_phone,
+            'principal_email' => $data->principal_email,
+            'phone'           => $data->phone,
+            'other_phone'     => $data->other_phone,
+            'teachers'        => $data->teachers,
+            'email'           => $data->email,
+        ]);
     }
 
     function test_validate_update_school()
     {
          //$this->withoutExceptionHandling();
          $this->actingAs($this->defaultUser(), 'api');
-         $theme = factory(School::class)->create();
+         $school = factory(School::class)->create();
 
          $params = [];
 
-        $this->putJson('/api/schools/'.$theme->id, $params)
+        $this->putJson('/api/schools/'.$school->id, $params)
             ->assertStatus(422)
             ->assertJson([
                 'errors' => ['name' => ['El campo nombre es obligatorio.']]
@@ -141,14 +146,13 @@ class SchoolTest extends TestCase
 
     function test_validate_unique_name_on_update_school()
     {
-         //$this->withoutExceptionHandling();
          $this->actingAs($this->defaultUser(), 'api');
          $other_school = factory(School::class)->create(['name' => 'Hardware']);
-         $theme = factory(School::class)->create();
+         $school= factory(School::class)->create();
 
          $params = ['name' => 'Hardware'];
 
-        $this->putJson('/api/schools/'.$theme->id, $params)
+        $this->putJson('/api/schools/'.$school->id, $params)
             ->assertStatus(422)
             ->assertJson([
                 'errors' => ['name' => ['nombre ya ha sido registrado.']]
@@ -157,12 +161,24 @@ class SchoolTest extends TestCase
 
     function test_can_use_same_name_on_update_school()
     {
+         $this->withoutExceptionHandling();
+
          $this->actingAs($this->defaultUser(), 'api');
-         $theme = factory(School::class)->create(['name' => 'Hardware']);
+         $school= factory(School::class)->create(['name' => 'Hardware']);
 
-         $params = ['name' => 'Hardware', 'area_id' => $theme->area_id];
+         $params = [
+            'name'            => $school->name,
+            'city_id'         => $school->city_id,
+            'principal_name'  => $school->principal_name,
+            'principal_phone' => $school->principal_phone,
+            'principal_email' => $school->principal_email,
+            'phone'           => $school->phone,
+            'other_phone'     => $school->other_phone,
+            'teachers'        => $school->teachers,
+            'email'           => $school->email,
+         ];
 
-         $this->putJson('/api/schools/'.$theme->id, $params)
+         $this->putJson('/api/schools/'.$school->id, $params)
             ->assertStatus(200)
             ->assertJson([
                 'data' => ['name' => 'Hardware']
@@ -174,11 +190,11 @@ class SchoolTest extends TestCase
     function test_destroy_school()
     {
          $this->actingAs($this->defaultUser(), 'api');
-         $theme = factory(School::class)->create();
+         $school= factory(School::class)->create();
 
-         $this->deleteJson('/api/schools/'.$theme->id)
+         $this->deleteJson('/api/schools/'.$school->id)
             ->assertStatus(204);
 
-        $this->assertDatabaseMissing('schools', ['id' => $theme->id]);
+        $this->assertDatabaseMissing('schools', ['id' => $school->id]);
     }
 }

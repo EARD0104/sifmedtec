@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use sifmedtec\Http\Controllers\Controller;
 use sifmedtec\School;
 use sifmedtec\Http\Resources\SchoolResource;
+use sifmedtec\Http\Requests\SchoolStore;
+use sifmedtec\Http\Requests\SchoolUpdate;
 
 class SchoolController extends Controller
 {
@@ -16,7 +18,7 @@ class SchoolController extends Controller
      */
     public function index(Request $request)
     {
-        $schools = School::name()->paginateIf();
+        $schools = School::name()->with(['city'])->paginateIf();
         return SchoolResource::collection($schools);
     }
 
@@ -28,7 +30,7 @@ class SchoolController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SchoolStore $request)
     {
         $school = School::create(request()->only('name', 'city_id','principal_name',
         'principal_phone',
@@ -52,16 +54,6 @@ class SchoolController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -70,9 +62,17 @@ class SchoolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SchoolUpdate $request, School $school)
     {
-        //
+        $school->update(request()->only('name', 'city_id','principal_name',
+        'principal_phone',
+        'principal_email',
+        'phone',
+        'other_phone',
+        'teachers',
+        'email'));
+
+        return new SchoolResource($school);
     }
 
     /**
@@ -81,8 +81,9 @@ class SchoolController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(School $school)
     {
-        //
+        $school->delete();
+        return response()->json([], 204);
     }
 }

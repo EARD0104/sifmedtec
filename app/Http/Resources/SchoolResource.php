@@ -17,7 +17,7 @@ class SchoolResource extends JsonResource
         return [
             'id'              => $this->id,
             'name'            => $this->name,
-            'city_id'         => $this->area_id,
+            'city'         => new CityResource($this->whenLoaded('city')),
             'principal_name'  => $this->principal_name,
             'principal_phone' => $this->principal_phone,
             'principal_email' => $this->principal_email,
