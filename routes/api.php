@@ -26,4 +26,5 @@ Route::middleware('auth:api')->group(function() {
     Route::resource('preferences', 'PreferenceController');
     Route::resource('groups', 'GroupController');
     Route::resource('months', 'MonthController');
+    Route::resource('passwords', 'PasswordController');
 });

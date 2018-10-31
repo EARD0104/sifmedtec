@@ -30,4 +30,5 @@ Route::middleware(['auth'])->group(function ()
     Route::view('schools', 'admin.schools');
     Route::view('preferences', 'admin.preferences');
     Route::view('groups', 'admin.groups');
+    Route::view('password', 'admin.password');
 });

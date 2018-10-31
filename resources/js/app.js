@@ -36,6 +36,7 @@ Vue.component('questions', require('./views/questions.vue'));
 Vue.component('themes', require('./views/themes.vue'));
 Vue.component('preferences', require('./views/preferences.vue'));
 Vue.component('groups', require('./views/groups.vue'));
+Vue.component('password', require('./views/password.vue'));
 
 Vue.component('modal', require('./components/Modal.vue'));
 
