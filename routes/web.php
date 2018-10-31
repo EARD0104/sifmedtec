@@ -29,4 +29,5 @@ Route::middleware(['auth'])->group(function ()
     Route::view('themes', 'admin.themes');
     Route::view('schools', 'admin.schools');
     Route::view('preferences', 'admin.preferences');
+    Route::view('groups', 'admin.groups');
 });

@@ -35,6 +35,8 @@ Vue.component('areas', require('./views/areas.vue'));
 Vue.component('questions', require('./views/questions.vue'));
 Vue.component('themes', require('./views/themes.vue'));
 Vue.component('preferences', require('./views/preferences.vue'));
+Vue.component('groups', require('./views/groups.vue'));
+
 Vue.component('modal', require('./components/Modal.vue'));
 
 const app = new Vue({

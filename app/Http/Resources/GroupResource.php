@@ -18,7 +18,8 @@ class GroupResource extends JsonResource
             'id' => $this->id,
             'school' => new SchoolResource($this->whenLoaded('school')),
             'month' => new MonthResource($this->whenLoaded('month')),
-            'status' => $this->status
+            'status' => $this->status,
+            'created_at' => $this->created_at->format('d-m-Y')
         ];
     }
 }
