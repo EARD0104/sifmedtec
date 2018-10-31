@@ -23,4 +23,6 @@ Route::middleware('auth:api')->group(function() {
     Route::resource('questions', 'QuestionController');
     Route::resource('answers', 'AnswerController');
     Route::resource('schools', 'SchoolController');
+    Route::resource('preferences', 'PreferenceController');
+    Route::resource('groups', 'GroupController');
 });

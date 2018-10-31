@@ -28,4 +28,5 @@ Route::middleware(['auth'])->group(function ()
     Route::view('questions', 'admin.questions');
     Route::view('themes', 'admin.themes');
     Route::view('schools', 'admin.schools');
+    Route::view('preferences', 'admin.preferences');
 });

@@ -207,7 +207,11 @@ return [
         'offer_price'             => 'precio oferta',
         'add_colors'              => 'Agregar Colores',
         'department_id' => 'departamento',
-        'city_id' => 'municipio'
+        'city_id' => 'municipio',
+        'question_area' => 'preguntas por area',
+        'answers_question' => 'respustas por preguntas',
+        'month_id' => 'mes',
+        'school_id' => 'escuela'
     ],
 
 
