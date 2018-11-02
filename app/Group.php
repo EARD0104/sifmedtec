@@ -3,6 +3,7 @@
 namespace sifmedtec;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Group extends Model
 {
@@ -33,6 +34,24 @@ class Group extends Model
         return $query->when(request()->has('school_id'), function ($q)
         {
             $q->where('school_id', request()->school_id);
+        });
+    }
+
+    public function scopeStatus($query)
+    {
+        return $query->when(request()->has('status'), function ($q)
+        {
+            $q->where('status', request()->status);
+        });
+    }
+
+    public function scopeDates($query)
+    {
+        return $query->when(request()->has('from') && request()->has('to'), function ($q)
+        {
+            $from = Carbon::parse(request()->from)->format('Y-m-d h:m');
+            $to = Carbon::parse(request()->to)->format('Y-m-d h:m');
+            $q->whereBetween('created_at', [$from, $to]);
         });
     }
 }

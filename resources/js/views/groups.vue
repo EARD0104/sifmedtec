@@ -11,21 +11,50 @@
                     </div>
 
                     <div class="card-body">
-                        <!-- <div class="input-group mb-12">
-                            <input type="text" v-model="filter.name" class="form-control" placeholder="buscar" aria-describedby="button-addon2">
-                            <div class="input-group-append">
-                                <button @click="index" class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa fa-search"></i></button>
+                        <div class="form-row">
+                            <div class="form-group col-xs-12 col-md-6 col-lg-3">
+                                <label for="filter_name">Escuela</label>
+                                <v-select  label="name" :options="schools" v-model="filter.school"></v-select>
                             </div>
-                        </div> -->
+                            <div class="form-group col-xs-12 col-md-6 col-lg-2">
+                                <label for="filter_name">Mes</label>
+                                <v-select label="name" :options="months" v-model="filter.month"></v-select>
+                            </div>
+                            <div class="form-group col-xs-12 col-md-6 col-lg-2">
+                                <label for="filter_name">Desde fecha</label>
+                                <input type="date" class="form-control form-control-lg" v-model="filter.from">
+                            </div>
+                            <div class="form-group col-xs-12 col-md-6 col-lg-2">
+                                <label for="filter_name">Hasta</label>
+                                <input type="date" class="form-control form-control-lg" v-model="filter.to">
+                            </div>
+                            <div class="form-group col-xs-12 col-md-6 col-lg-2">
+                                <div class="form-check">
+                                    <br>
+                                    <br>
+                                    <input class="form-check-input" type="checkbox" id="gridCheck" v-model="filter.status" value="0">
+                                    <label class="form-check-label" for="gridCheck">
+                                        Inactivo
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="">
+                                <br>
+                                <button type="button" @click="index" class="btn btn-primary btn-lg"><span class="fa fa-search"></span></button>
+                            </div>
+
+                        </div>
+
                         <br>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <td>Código</td>
-                                    <td>Fecha de creación</td>
-                                    <td>Escuela</td>
-                                    <td>Mes de evaluación</td>
-                                    <td></td>
+                                    <th>Código</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Escuela</th>
+                                    <th>Mes de evaluación</th>
+                                    <th>Estado</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,8 +64,13 @@
                                     <td>{{ group.school.name}}</td>
                                     <td>{{ group.month.name}}</td>
                                     <td>
-                                        <button @click="edit(group)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>
-                                        <button @click="del(group)" v-tooltip="'Eliminar'"  type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                        <span v-if="group.status == 1" class="badge badge-success">Activo</span>
+                                        <span v-else class="badge badge-info">Inactivo</span>
+                                    </td>
+                                    <td>
+                                        <button :disabled="!group.status"  @click="edit(group)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>
+                                        <button v-if="group.status" @click="del(group)" v-tooltip="'Desactivar'"  type="button" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
+                                        <button v-if="!group.status" @click="act(group)" v-tooltip="'Activar'"  type="button" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -84,6 +118,10 @@
             <button @click="showDestroyModal = false" slot="btnCancel" type="button"   class="btn btn-link">Cancelar</button>
             <button @click="destroy" slot="btnSave" type="button"  class="btn btn-danger">Si, Eliminar</button>
         </modal>
+        <modal v-show="showActiveModal"  title="¿Estas seguro de activar este grupo?"  size="modal-md">
+            <button @click="showActiveModal = false" slot="btnCancel" type="button"   class="btn btn-link">Cancelar</button>
+            <button @click="destroy" slot="btnSave" type="button"  class="btn btn-success">Si, Activar</button>
+        </modal>
     </div>
 </template>
 <script>
@@ -101,6 +139,7 @@
                 showAddModal:false,
                 showEditModal:false,
                 showDestroyModal:false,
+                showActiveModal:false,
                 schools:[],
                 months:[],
                 errors:[],
@@ -123,7 +162,11 @@
             index(page = 1) {
                 let params = {
                     page: page,
-                    name: this.filter.name,
+                    school_id: this.filter.school ? this.filter.school.id:null ,
+                    month_id: this.filter.month ? this.filter.month.id:null ,
+                    status: this.filter.status ? this.filter.status:null,
+                    from: this.filter.from ? this.filter.from:null,
+                    to: this.filter.to ? this.filter.to:null,
                 };
 
                 Group.get(params, data => {
@@ -162,12 +205,17 @@
                 this.current = group;
                 this.showDestroyModal = true
             },
+            act(group){
+                this.current = group;
+                this.showActiveModal = true
+            },
             destroy() {
                 Group.destroy(this.current.id, data => {
                     this.$toastr.s("Eliminado exitosamente.");
                     this.index();
                     this.current = {};
                     this.showDestroyModal = false;
+                    this.showActiveModal = false;
                 });
             },
             clear(){

@@ -18,7 +18,7 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-        $groups = Group::query()->school()->month()->with('school', 'month')->orderByDesc('id')->paginateIf();
+        $groups = Group::query()->dates()->status()->school()->month()->with('school', 'month')->orderByDesc('id')->paginateIf();
         return GroupResource::collection($groups);
     }
 
@@ -66,7 +66,8 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        $group->delete();
+        $group->status = !$group->status;
+        $group->save();
         return response()->json([],204);
     }
 }
