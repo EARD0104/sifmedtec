@@ -211,7 +211,9 @@ return [
         'question_area' => 'preguntas por area',
         'answers_question' => 'respustas por preguntas',
         'month_id' => 'mes',
-        'school_id' => 'escuela'
+        'school_id' => 'escuela',
+        'group_id' => 'grupo',
+        'teacher_dpi' => 'dpi'
     ],
 
 

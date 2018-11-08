@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>sifmedtec</title>
 
         <!-- Fonts -->
@@ -12,6 +12,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
         <!-- Styles -->
+
         <style>
             html, body {
                 background-color: #fff;
@@ -41,32 +42,11 @@
                 right: 10px;
                 top: 18px;
             }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 50px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
         </style>
+
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="flex-center  full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -76,43 +56,11 @@
                     @endauth
                 </div>
             @endif
-
-            <div class="content">
-                <div class="title">
-                    Sistema Informatico de Medición de Capacidades Tecnologicas
-                </div>
-                <h2>Maestros de Educación Primaria y Básica</h2>
-                <div class="row">
-                    <div class="col-md-10 offset-md-4">
-                        <form>
-                            <div class="form-row align-items-center">
-                                <div class="col-sm-3 my-1">
-                                <label class="sr-only" for="inlineFormInputGroupUsername">Username</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                    <div class="input-group-text">*</div>
-                                    </div>
-                                    <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="No. Grupo">
-                                </div>
-                                </div>
-                                <div class="col-auto my-1">
-                                <button type="submit" class="btn btn-primary">Examinar</button>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-
-                {{-- <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div> --}}
+            <div id="app">
+                <evaluations></evaluations>
             </div>
         </div>
     </body>
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}"></script>
 </html>

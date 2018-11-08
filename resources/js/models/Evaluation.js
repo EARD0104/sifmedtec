@@ -1,34 +1,34 @@
-class Group {
+class Evaluation {
     static get(params, then) {
-        axios.get('/api/groups', {
+        axios.get('/evaluations', {
             params: params
         })
         .then(({data}) => then(data));
     }
 
     static store(data, then, error) {
-        axios.post('/api/groups', data)
+        axios.post('/evaluations', data)
             .then(({data}) => then(data))
             .catch(({response}) => error(response.data.errors));
     }
 
     static show(element, then, error) {
-        axios.get('/groups/'+element)
+        axios.get('/evaluations/'+element)
             .then(({data}) => then(data))
             .catch(({response}) => error(response.data.errors));
     }
 
     static update(element, data, then, error) {
-        axios.put('/api/groups/' + element, data)
+        axios.put('/evaluations/' + element, data)
             .then(({data}) => then(data))
             .catch(({response}) => error(response.data.errors));
     }
 
     static destroy(element, then) {
-        axios.delete('/api/groups/' + element)
+        axios.delete('/evaluations/' + element)
             .then(({data}) => then(data));
     }
 
 }
 
-export default Group;
+export default Evaluation;

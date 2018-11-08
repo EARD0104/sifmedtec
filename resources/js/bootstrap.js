@@ -40,7 +40,13 @@ if (token) {
         'Authorization': 'Bearer ' + token.content
     };
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    token = document.head.querySelector('meta[name="csrf-token"]'); 
+    window.axios.defaults.headers.common = {
+        'X-CSRF-TOKEN': token.content,
+        'X-Requested-With': 'XMLHttpRequest',
+        'Authorization': 'Bearer ' + token.content
+    };
+    //console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 
