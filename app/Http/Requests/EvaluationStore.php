@@ -26,7 +26,7 @@ class EvaluationStore extends FormRequest
         //unique:servers,ip,'.$this->id.',NULL,id,hostname,'.$request->input('hostname')
         return [
             'teacher_name' => 'required',
-            'teacher_dpi'  => 'required|min:13|numeric|unique:evaluations,teacher_dpi,NULL,id,group_id,'.request()->group_id,
+            'teacher_dpi'  => 'required|digits_between:13,13|numeric|unique:evaluations,teacher_dpi,NULL,id,group_id,'.request()->group_id,
             'group_id'     => 'required|exists:groups,id'
         ];
     }
@@ -35,7 +35,8 @@ class EvaluationStore extends FormRequest
     {
         return [
             'teacher_name.required' => 'El campo nombre es obligatorio.',
-            'teacher_dpi.unique' => 'Ya existe una evaluación en este grupo con este dpi'
+            'teacher_dpi.unique' => 'Ya existe una evaluación en este grupo con este dpi',
+            'teacher_dpi.digits_between' => 'El campo dpi debe tener 13 digitos'
         ];
     }
 }

@@ -38,7 +38,7 @@ class EvaluationController extends Controller
     public function store(EvaluationStore $request)
     {
         $evaluation = Evaluation::create(request()->only('teacher_name', 'teacher_dpi', 'group_id'));
-        return new EvaluationResource($evaluation);
+        return new EvaluationResource($evaluation->load('group.school'));
     }
 
     /**

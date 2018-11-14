@@ -24,7 +24,7 @@
                                     <td>Id</td>
                                     <td>Nombre</td>
                                     <td>Área</td>
-                                    <td>Respuestas</td>
+                                    <td class="text-center">Respuestas</td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -33,7 +33,7 @@
                                     <td>{{ question.id}}</td>
                                     <td>{{ question.name}}</td>
                                     <td>{{ question.area.name}}</td>
-                                    <td></td>
+                                    <td class="text-center">{{ question.answers_total }}</td>
                                     <td>
                                         <button @click="show(question.id)" v-tooltip="'Detalles'" type="button" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button>
                                         <button @click="edit(question)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>

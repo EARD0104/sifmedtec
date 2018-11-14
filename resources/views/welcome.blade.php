@@ -47,7 +47,7 @@
     </head>
     <body>
         <div class="flex-center  full-height">
-            @if (Route::has('login'))
+           {{--  @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Inicio</a>
@@ -55,7 +55,7 @@
                         <a href="{{ route('login') }}">Ingreso</a>
                     @endauth
                 </div>
-            @endif
+            @endif --}}
             <div id="app">
                 <evaluations></evaluations>
             </div>

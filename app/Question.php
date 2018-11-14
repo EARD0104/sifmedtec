@@ -14,6 +14,11 @@ class Question extends Model
         return $this->belongsTo(Area::class);
     }
 
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
     /* accesors */
     public function scopeName($query)
     {

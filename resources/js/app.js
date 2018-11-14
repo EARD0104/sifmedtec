@@ -16,6 +16,7 @@ Vue.use(CheckboxRadio);
 import Toastr from 'vue-toastr';
 require('vue-toastr/src/vue-toastr.scss');
 Vue.use(Toastr);
+import VueCharts from 'vue-chartjs';
 
 
 
@@ -40,6 +41,7 @@ Vue.component('password', require('./views/password.vue'));
 Vue.component('evaluations', require('./views/evaluations.vue'));
 
 Vue.component('modal', require('./components/Modal.vue'));
+Vue.component('line-chart', require('./components/line_chart.vue'));
 
 const app = new Vue({
     el: '#app'

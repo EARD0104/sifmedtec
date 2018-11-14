@@ -53,30 +53,65 @@
                 </div>
             </div>
         </div>
-        <div v-if="show_question" style="min-width: 57em;">
-            <div class="progress" style="height: 20px;">
-                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+        <div v-if="show_questions" style="min-width: 57em;">
+            <div v-if="show_result" class="col-md-6 offset-md-3">
+            <h1 class="display-4">{{ evaluation.teacher_name }}</h1>
+                <table class="table">
+                    <thead>
+                        <tr class="table-light">
+                            <th>Grupo</th>
+                            <th colspan="2">{{ evaluation.group.id}}</th>
+                        </tr>
+                        <tr class="table-light">
+                            <th>Escuela</th>
+                            <th colspan="2">{{ evaluation.group.school.name}}</th>
+                        </tr>
+                        <tr>
+                            <th>Respuestas correctas</th>
+                            <th>{{ correct_answers }}</th>
+                            <th>
+                                <div class="progress-bar" role="progressbar" :style="'width:'+correct_answers_percent+'%;'" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{correct_answers_percent}}%</div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Respuestas erroneas</th>
+                            <th>{{ incorrect_answers }}</th>
+                            <th>
+                                <div class="progress-bar bg-danger" role="progressbar" :style="'width:'+incorrect_answers_percent+'%;'" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{incorrect_answers_percent}}%</div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width:200px !important ">Total de Preguntas</th>
+                            <th style="width:10px !important">{{ total_answers }}</th>
+                            <th>
+                                <div class="progress-bar" :class="{ 'bg-success': answers_proggress == 100 }" role="progressbar" :style="'width:'+answers_proggress+'%;'" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{answers_proggress}}%</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <p class="lead">
+                    Agradecemos tu tiempo, el director del establecimiento, o el encargado de la evalución del grupo estará dándo a conocer el plan de capacitación para mejorar los resultados de la presente
+                </p>
+
+            </div>
+
+            <div class="progress" style="height: 20px;" v-if="!show_result">
+                <div class="progress-bar" :class="{ 'bg-success': answers_proggress == 100 }" role="progressbar" :style="'width:'+answers_proggress+'%;'" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{answers_proggress}}%</div>
             </div>
             <br>
-            <div  class="card">
-                <h1 class="card-header">Hardware</h1>
+            <div  class="card" v-if="show_question">
+                <h1 class="card-header">{{ areas[current_area].name }}</h1>
                 <div class="card-body">
-                    <h2 class="card-title">¿Una super  pregunta?</h2>
-                    <div class="form-check">
-                        <input v-model="answer" class="form-check-input" type="radio"  value="option1" checked>
-                        <label class="form-check-label" for="exampleRadios1">
-                            Default radio
+                    <h2 class="card-title">{{ areas[current_area].questions[current_question].name}}</h2>
+                    <div class="form-check" v-for="answer in areas[current_area].questions[current_question].answers_to_evaluate" :key="answer.id">
+                        <input v-model="answered" class="form-check-input" name="answers" type="radio"  :value="answer">
+                        <label class="form-check-label">
+                            {{ answer.name }}
                         </label>
                     </div>
-                        <div class="form-check">
-                        <input v-model="answer" class="form-check-input" type="radio" value="option2">
-                        <label class="form-check-label" for="exampleRadios2">
-                            Second default radio
-                        </label>
-                        </div>
                 </div>
                 <div class="card-footer text-muted">
-                    <a href="#" v-if="answer != ''" class="btn btn-primary btn-block">Siguiente ></a>
+                    <button @click="next" type="button" class="btn btn-primary btn-block">Siguiente ></button>
                 </div>
             </div>
         </div>
@@ -87,20 +122,77 @@
 <script>
 import Group from '../models/Group';
 import Evaluation from '../models/Evaluation';
+import EvaluationQuestion from '../models/EvaluationQuestion';
 export default {
     data(){
         return {
             show_group_input: true,
             show_teacher_inputs:false,
+            show_questions:false,
             show_question:false,
+            show_result:false,
             create:{},
             errors : [],
             group:{},
             evaluation:{},
-            answer:'',
+            answers:[],
+            areas:[],
+            current_question:0,
+            current_area:0,
+            correct:0,
+            answereds :0,
+            answered :{},
+            correct_answers:0,
+            correct_answers_percent:0,
+            incorrect_answers:0,
+            incorrect_answers_percent:0,
         }
     },
+    computed:{
+        total_answers(){
+            if (this.evaluation.preferences) {
+                return this.areas.length * this.evaluation.preferences.answers_question;
+            }
+
+            return 0;
+        },
+
+        answers_proggress(){
+            return (this.answereds /this.total_answers)  * 100 ;
+        }
+    },
+    created(){
+        this.loadAreaQuestions();
+    },
     methods:{
+        next(){
+
+            this.setAnswer();
+
+            if (this.current_question == (this.evaluation.preferences.answers_question - 1 ) &&  this.current_area  != this.areas.length - 1 ) {
+
+                if (this.current_area != this.areas.length - 1) {
+                    this.current_area     = this.current_area + 1 ;
+                    this.current_question = 0 ;
+                }
+                this.answereds         = this.answereds + 1;
+            }
+
+            else if (this.current_question != (this.evaluation.preferences.answers_question - 1 )) {
+                this.current_question = this.current_question +1 ;
+                this.answereds        = this.answereds + 1;
+            }
+
+            else{
+                this.answereds      = this.answereds + 1;
+                this.show_question = false;
+                this.show_result   = true;
+            }
+
+        },
+        setAnswer(){
+            this.areas[this.current_area].answers.push(this.answered);
+        },
         verifyGroup(){
             Group.show(this.create.group_id, data => {
                 this.group               = data.data;
@@ -115,8 +207,39 @@ export default {
                 this.evaluation          = data.data;
                 this.errors              = [];
                 this.show_teacher_inputs = false;
-                this.show_question        = true;
+                this.show_questions      = true;
+                this.show_question      = true;
             }, errors => this.errors = errors)
+        },
+        loadAreaQuestions(){
+            EvaluationQuestion.get({}, data => {
+                this.areas = data.data
+            });
+        },
+        results(){
+            let corrects = 0
+            _.forEach(this.areas, function(area) {
+                _.forEach(area.answers, function(answer) {
+                    answer.is_the_answer == 1 ? corrects++: null ;
+                });
+            });
+
+            this.correct_answers = corrects;
+            this.correct_answers_percent = (corrects /this.total_answers)  * 100;
+
+            this.incorrect_answers = this.total_answers - corrects;
+            this.incorrect_answers_percent = (this.incorrect_answers /this.total_answers)  * 100;
+
+        }
+
+    },
+    watch:{
+        show_result(){
+            if (this.show_result) {
+                this.$toastr.s("Evaluación finalizada con exito.");
+                this.results();
+
+            }
         }
     }
 

@@ -18,7 +18,7 @@ class QuestionController extends Controller
      */
     public function index(Request $request)
     {
-        $questions = Question::name()->area()->orderByDesc('area_id')->with('area')->paginateIf();
+        $questions = Question::name()->area()->orderByDesc('area_id')->with(['area', 'answers'])->paginateIf();
         return QuestionResource::collection($questions);
     }
 

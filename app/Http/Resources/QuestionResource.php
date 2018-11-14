@@ -15,9 +15,12 @@ class QuestionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'area' => new AreaResource($this->whenLoaded('area'))
+            'id'            => $this->id,
+            'name'          => $this->name,
+            'area'          => new AreaResource($this->whenLoaded('area')),
+            'answers'       => AnswerResource::collection($this->whenLoaded('answers')),
+            'answers_total' => $this->answers->count(),
+            'answers_to_evaluate' => $this->answers_to_evaluate ? $this->answers_to_evaluate: []
         ];
     }
 }

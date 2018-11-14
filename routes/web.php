@@ -17,6 +17,7 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 Route::resource('evaluations', 'EvaluationController');
+Route::get('evaluation-questions', 'EvaluationQuestionController@index');
 Route::get('groups/{group}', 'GroupController@show');
 
 Route::middleware(['auth'])->group(function ()

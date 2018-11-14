@@ -20,7 +20,9 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "chart.js": "^2.7.3",
         "v-tooltip": "^2.0.0-rc.33",
+        "vue-chartjs": "^3.4.0",
         "vue-checkbox-radio": "^0.6.0",
         "vue-select": "^2.5.1",
         "vue-toastr": "^2.0.14"
