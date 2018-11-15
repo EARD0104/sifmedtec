@@ -19,7 +19,7 @@
                                     </div>
                                     <input type="text" class="form-control" v-model="create.group_id" :class="{'is-invalid':errors.group_id }" id="validationServerUsername" placeholder="Codigo" >
                                     <div class="input-group-append">
-                                        <button  @click="verifyGroup" class="btn btn-primary" type="button" id="button-addon2">Siguiente ></button>
+                                        <button  @click="validateGroup" class="btn btn-primary" type="button" id="button-addon2">Siguiente ></button>
                                     </div>
                                     <div v-if="errors.group_id"  class="invalid-feedback">
                                         {{ errors.group_id[0]}}
@@ -48,23 +48,23 @@
                             <input v-model="create.teacher_dpi" type="text" class="form-control">
                             <small v-if="errors.teacher_dpi"  class="form-text text-danger">{{ errors.teacher_dpi[0]}}</small>
                         </div>
-                        <button @click="storeTeacher" type="button" class="btn btn-primary btn-block">Siguiente ></button>
+                        <button @click="validateTeacher" type="button" class="btn btn-primary btn-block">Siguiente ></button>
                     </div>
                 </div>
             </div>
         </div>
         <div v-if="show_questions" style="min-width: 57em;">
             <div v-if="show_result" class="col-md-6 offset-md-3">
-            <h1 class="display-4">{{ evaluation.teacher_name }}</h1>
+            <h1 class="display-4">{{ create.teacher_name }}</h1>
                 <table class="table">
                     <thead>
                         <tr class="table-light">
                             <th>Grupo</th>
-                            <th colspan="2">{{ evaluation.group.id}}</th>
+                            <th colspan="2">{{ group.id}}</th>
                         </tr>
                         <tr class="table-light">
                             <th>Escuela</th>
-                            <th colspan="2">{{ evaluation.group.school.name}}</th>
+                            <th colspan="2">{{ group.school.name}}</th>
                         </tr>
                         <tr>
                             <th>Respuestas correctas</th>
@@ -137,6 +137,7 @@ export default {
             evaluation:{},
             answers:[],
             areas:[],
+            preferences:{},
             current_question:0,
             current_area:0,
             correct:0,
@@ -150,8 +151,8 @@ export default {
     },
     computed:{
         total_answers(){
-            if (this.evaluation.preferences) {
-                return this.areas.length * this.evaluation.preferences.answers_question;
+            if (this.preferences) {
+                return this.areas.length * this.preferences.answers_question;
             }
 
             return 0;
@@ -165,35 +166,8 @@ export default {
         this.loadAreaQuestions();
     },
     methods:{
-        next(){
-
-            this.setAnswer();
-
-            if (this.current_question == (this.evaluation.preferences.answers_question - 1 ) &&  this.current_area  != this.areas.length - 1 ) {
-
-                if (this.current_area != this.areas.length - 1) {
-                    this.current_area     = this.current_area + 1 ;
-                    this.current_question = 0 ;
-                }
-                this.answereds         = this.answereds + 1;
-            }
-
-            else if (this.current_question != (this.evaluation.preferences.answers_question - 1 )) {
-                this.current_question = this.current_question +1 ;
-                this.answereds        = this.answereds + 1;
-            }
-
-            else{
-                this.answereds      = this.answereds + 1;
-                this.show_question = false;
-                this.show_result   = true;
-            }
-
-        },
-        setAnswer(){
-            this.areas[this.current_area].answers.push(this.answered);
-        },
-        verifyGroup(){
+        //validamos si el grupo existe o esta activo
+        validateGroup(){
             Group.show(this.create.group_id, data => {
                 this.group               = data.data;
                 this.show_group_input    = false;
@@ -201,23 +175,62 @@ export default {
                 this.show_teacher_inputs = true;
             }, errors => this.errors = errors)
         },
-        storeTeacher(){
-            Evaluation.store(this.create, data => {
+        //validamos si el profesor ya se ha realizado una evalución en este grupo
+        validateTeacher(){
+            Evaluation.get(this.create, data => {
                 this.$toastr.s("Datos correctos, ha iniciado el examen.");
-                this.evaluation          = data.data;
+                this.preferences         = data.data;
                 this.errors              = [];
                 this.show_teacher_inputs = false;
                 this.show_questions      = true;
-                this.show_question      = true;
+                this.show_question       = true;
             }, errors => this.errors = errors)
         },
+        //cargamos el listado de preguntas y respuestas y las agrupamos por areas
         loadAreaQuestions(){
             EvaluationQuestion.get({}, data => {
                 this.areas = data.data
             });
         },
+        //opcion de ir a la siguiente pregunta
+        next(){
+            //actualizamos el total de preguntas respondidas
+            this.answereds         = this.answereds + 1;
+
+            //al dar clic en siguiente automaticamente guardamos la respuesta en un array
+            this.setAnswer();
+
+            //verificamos si el número de la pregunta es igual al total del array de preguntas
+            //y si esta area ya finalizo sus preguntas
+            if (this.current_question == (this.preferences.answers_question - 1 ) &&  this.current_area  != this.areas.length - 1 ) {
+                //si ya finalizo
+                if (this.current_area != this.areas.length - 1) {
+                    //nos pasamos a la siguiente area cambiando el index del array de areas
+                    this.current_area     = this.current_area + 1 ;
+                    //retornamos a 0 el index del array de preguntas
+                    this.current_question = 0 ;
+                }
+            }
+            //si todavia tenemos preguntas pendientes solo cambiamos el index de la siguiete pregunta
+            else if (this.current_question != (this.preferences.answers_question - 1 )) {
+                this.current_question = this.current_question +1 ;
+            }
+            // si ya se acabaron las areas y las preguntas cerramos el formulario de preguntas y mostramos los resultados
+            else{
+                this.show_question = false;
+                this.show_result   = true;
+            }
+
+        },
+        //agregamos una respuesta a una area en especifico
+        setAnswer(){
+            this.areas[this.current_area].answers.push(this.answered);
+        },
+        //realizamos los calculos de los resultados
         results(){
             let corrects = 0
+
+            //obtenemos el porcentaje de la evaluación
             _.forEach(this.areas, function(area) {
                 _.forEach(area.answers, function(answer) {
                     answer.is_the_answer == 1 ? corrects++: null ;
@@ -229,16 +242,25 @@ export default {
 
             this.incorrect_answers = this.total_answers - corrects;
             this.incorrect_answers_percent = (this.incorrect_answers /this.total_answers)  * 100;
+        },
 
-        }
+        //guardamos la evaluacion y terminamos
+        storeEvaluation(){
 
-    },
-    watch:{
-        show_result(){
-            if (this.show_result) {
+            this.create.areas = this.areas;
+            Evaluation.store(this.create, data => {
                 this.$toastr.s("Evaluación finalizada con exito.");
                 this.results();
+            }, errors => this.errors = errors)
+        }
+    },
 
+    watch:{
+        //Este observador esta verificando si podemos mostrar los resultados y si es asi
+        //mostramos el mensaje  de exito y los resultados en tabla
+        show_result(){
+            if (this.show_result) {
+                this.storeEvaluation();
             }
         }
     }

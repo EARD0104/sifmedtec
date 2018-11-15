@@ -1,9 +1,10 @@
 class Evaluation {
-    static get(params, then) {
+    static get(params, then, error) {
         axios.get('/evaluations', {
             params: params
         })
-        .then(({data}) => then(data));
+        .then(({data}) => then(data))
+        .catch(({response}) => error(response.data.errors));
     }
 
     static store(data, then, error) {

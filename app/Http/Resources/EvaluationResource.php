@@ -22,7 +22,6 @@ class EvaluationResource extends JsonResource
             'teacher_name' => $this->teacher_name,
             'teacher_dpi'  => $this->teacher_dpi,
             'group'        => new GroupResource($this->whenLoaded('group')),
-            'preferences'  => new PreferenceResource($preferences = Preference::first())
         ];
     }
 }

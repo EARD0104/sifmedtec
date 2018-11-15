@@ -19,8 +19,7 @@ class GroupController extends Controller
 
         $group = Group::find($group);
 
-        return new GroupResource($group);
-
+        return new GroupResource($group->load(['school']));
 
     }
 }

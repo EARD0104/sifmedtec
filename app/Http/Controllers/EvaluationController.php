@@ -6,6 +6,8 @@ use sifmedtec\Evaluation;
 use Illuminate\Http\Request;
 use sifmedtec\Http\Resources\EvaluationResource;
 use sifmedtec\Http\Requests\EvaluationStore;
+use sifmedtec\Http\Resources\PreferenceResource;
+use sifmedtec\Preference;
 
 class EvaluationController extends Controller
 {
@@ -14,19 +16,9 @@ class EvaluationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(EvaluationStore $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return new PreferenceResource(Preference::first());
     }
 
     /**
@@ -35,10 +27,21 @@ class EvaluationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EvaluationStore $request)
+    public function store(Request $request)
     {
         $evaluation = Evaluation::create(request()->only('teacher_name', 'teacher_dpi', 'group_id'));
-        return new EvaluationResource($evaluation->load('group.school'));
+
+        foreach ($request->areas as $area) {
+            foreach ($area['answers'] as $answer) {
+                $evaluation->details()->create([
+                    'area_id'   => $area['id'],
+                    'answer_id' => $answer['id'],
+                    'answer'    => $answer['is_the_answer']
+                ]);
+            }
+        }
+
+        return new EvaluationResource($evaluation);
     }
 
     /**
