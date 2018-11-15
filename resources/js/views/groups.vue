@@ -125,7 +125,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">
-                            Resultado Generales
+                            Resultados Generales
                         </h5>
                     </div>
 
@@ -172,10 +172,10 @@
                             <tbody>
                                 <tr v-for="area in current.areas" :key="area.id">
                                     <td>{{ area.name }}</td>
-                                    <td>{{ area.answers }}</td>
+                                    <td>{{ area.total }}</td>
                                     <td>{{ area.corrects }}</td>
                                     <td>{{ area.incorrects }}</td>
-                                    <td>{{ area.correct_percent}}</td>
+                                    <td>{{ area.correct_percent}}%</td>
                                 </tr>
                             </tbody>
                         </table>

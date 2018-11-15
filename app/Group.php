@@ -45,6 +45,28 @@ class Group extends Model
         return $count;
     }
 
+    public function getAreasResultsAttribute()
+    {
+        $areas = Area::all();
+
+        foreach ($areas as $area) {
+            $count = 0;
+            $total = 0;
+            foreach ($this->evaluations as $evaluation) {
+                $count = $count + $evaluation->details()->where('area_id', $area->id)->where('answer',1)->get()->count();
+            }
+
+            foreach ($this->evaluations as $evaluation) {
+                $total = $total + $evaluation->details()->where('area_id', $area->id)->get()->count();
+            }
+
+            $area->total = $total;
+            $area->corrects = $count;
+
+        }
+        return $areas;
+    }
+
     /* accesors */
     public function scopeMonth($query)
     {
