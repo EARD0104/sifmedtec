@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" v-if="show_groups">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -68,6 +68,8 @@
                                         <span v-else class="badge badge-info">Inactivo</span>
                                     </td>
                                     <td>
+                                        <button  @click="showResults(group)" v-tooltip="'Resultados'" type="button" class="btn btn-secondary btn-sm"><i class="fa fa-clipboard-list"></i></button>
+                                        <button  @click="show(group)" v-tooltip="'Evaluados'" type="button" class="btn btn-info btn-sm"><i class="fa fa-users"></i></button>
                                         <button :disabled="!group.status"  @click="edit(group)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>
                                         <button v-if="group.status" @click="del(group)" v-tooltip="'Desactivar'"  type="button" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
                                         <button v-if="!group.status" @click="act(group)" v-tooltip="'Activar'"  type="button" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
@@ -77,6 +79,166 @@
 
                         </table>
                         <paginator :pagination="pagination" @changePage="index"></paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center" v-if="show_groups_results">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            Resultado de grupo
+                            <button type="button" @click="showGroups" v-tooltip="'Regresar'" class="btn btn-link btn-sm float-right"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</button>
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Escuela</th>
+                                    <th>Mes de evaluación</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ current.id}}</td>
+                                    <td>{{ current.created_at}}</td>
+                                    <td>{{ current.school.name}}</td>
+                                    <td>{{ current.month.name}}</td>
+                                    <td>
+                                        <span v-if="current.status == 1" class="badge badge-success">Activo</span>
+                                        <span v-else class="badge badge-info">Inactivo</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            Resultado Generales
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Total de preguntas</th>
+                                    <th class="text-center">Preguntas acertadas</th>
+                                    <th class="text-center">Preguntas erradas</th>
+                                    <th class="text-center">Porcentaje aprobado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">{{ current.total_answers }}</td>
+                                    <td class="text-center">{{ current.answers_correct }}</td>
+                                    <td class="text-center">{{ current.answers_incorrect }}</td>
+                                    <td class="text-center" :class="{'text-danger':current.answers_correct_percent<50}">{{ current.answers_correct_percent}}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            Resultado de grupo por área
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Área</th>
+                                    <th>Total de preguntas</th>
+                                    <th>Preguntas acertadas</th>
+                                    <th>Preguntas erradas</th>
+                                    <th>Porcentaje aprobado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="area in current.areas" :key="area.id">
+                                    <td>{{ area.name }}</td>
+                                    <td>{{ area.answers }}</td>
+                                    <td>{{ area.corrects }}</td>
+                                    <td>{{ area.incorrects }}</td>
+                                    <td>{{ area.correct_percent}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center" v-if="show_groups_details">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            Evaluados del grupo
+                            <button type="button" @click="showGroups" v-tooltip="'Regresar'" class="btn btn-link btn-sm float-right"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</button>
+                        </h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Escuela</th>
+                                    <th>Mes de evaluación</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ current.id}}</td>
+                                    <td>{{ current.created_at}}</td>
+                                    <td>{{ current.school.name}}</td>
+                                    <td>{{ current.month.name}}</td>
+                                    <td>
+                                        <span v-if="current.status == 1" class="badge badge-success">Activo</span>
+                                        <span v-else class="badge badge-info">Inactivo</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id evaluación</th>
+                                    <th>Nombre</th>
+                                    <th>DPI</th>
+                                    <th>Fecha</th>
+                                    <th>Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="evaluation in current.evaluations" :key="evaluation.id">
+                                    <td>{{ evaluation.id}}</td>
+                                    <td>{{ evaluation.teacher_name}}</td>
+                                    <td>{{ evaluation.teacher_dpi}}</td>
+                                    <td>{{ evaluation.created_at}}</td>
+                                    <td :class="{'text-danger': evaluation.correct_percent < 50}">{{ evaluation.correct_percent}}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -136,6 +298,9 @@
         components: {Paginator, vSelect},
         data(){
             return {
+                show_groups : true,
+                show_groups_details : false,
+                show_groups_results: false,
                 showAddModal:false,
                 showEditModal:false,
                 showDestroyModal:false,
@@ -158,6 +323,23 @@
             loadData(){
                 School.get({}, data=> { this.schools = data.data});
                 Month.get({}, data=> { this.months = data.data});
+            },
+            show(group){
+                this.show_groups_results = false;
+                this.show_groups         = false;
+                this.show_groups_details = true;
+                this.current             = group;
+            },
+            showGroups(){
+                this.show_groups_results = false;
+                this.show_groups_details = false;
+                this.show_groups         = true;
+            },
+            showResults(group){
+                this.show_groups         = false;
+                this.show_groups_details = false;
+                this.show_groups_results = true;
+                this.current             = group;
             },
             index(page = 1) {
                 let params = {

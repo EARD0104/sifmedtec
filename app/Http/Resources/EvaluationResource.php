@@ -18,10 +18,12 @@ class EvaluationResource extends JsonResource
 
 
         return [
-            'id'           => $this->id,
-            'teacher_name' => $this->teacher_name,
-            'teacher_dpi'  => $this->teacher_dpi,
-            'group'        => new GroupResource($this->whenLoaded('group')),
+            'id'              => $this->id,
+            'teacher_name'    => $this->teacher_name,
+            'teacher_dpi'     => $this->teacher_dpi,
+            'created_at'      => $this->created_at->format('d/m/Y'),
+            'group'           => new GroupResource($this->whenLoaded('group')),
+            'correct_percent' => $this->correct_percent
         ];
     }
 }

@@ -15,11 +15,16 @@ class GroupResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'school' => new SchoolResource($this->whenLoaded('school')),
-            'month' => new MonthResource($this->whenLoaded('month')),
-            'status' => $this->status,
-            'created_at' => $this->created_at->format('d-m-Y')
+            'id'                      => $this->id,
+            'school'                  => new SchoolResource($this->whenLoaded('school')),
+            'month'                   => new MonthResource($this->whenLoaded('month')),
+            'evaluations'             => EvaluationResource::collection($this->whenLoaded('evaluations')),
+            'status'                  => $this->status,
+            'created_at'              => $this->created_at->format('d-m-Y'),
+            'total_answers'           => $this->total_answers,
+            'answers_correct'         => $this->answers_correct,
+            'answers_correct_percent' => ( $this->answers_correct / $this->total_answers)  * 100,
+            'answers_incorrect'       => $this->total_answers - $this->answers_correct,
         ];
     }
 }

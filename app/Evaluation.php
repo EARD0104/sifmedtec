@@ -19,4 +19,12 @@ class Evaluation extends Model
     {
         return $this->hasMany(EvaluationDetail::class);
     }
+
+    public function getCorrectPercentAttribute()
+    {
+        $total = $this->details->count();
+        $correct = $this->details()->where('answer', 1)->get()->count();
+
+        return ($correct / $total)  * 100 ;
+    }
 }

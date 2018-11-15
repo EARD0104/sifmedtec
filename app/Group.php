@@ -20,6 +20,31 @@ class Group extends Model
         return $this->belongsTo(Month::class);
     }
 
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
+
+    public function getTotalAnswersAttribute()
+    {
+        $count =0;
+
+        foreach ($this->evaluations as $evaluation) {
+            $count = $count + $evaluation->details->count();
+        }
+        return $count;
+    }
+
+    public function getAnswersCorrectAttribute()
+    {
+        $count =0;
+
+        foreach ($this->evaluations as $evaluation) {
+            $count = $count + $evaluation->details()->where('answer',1)->get()->count();
+        }
+        return $count;
+    }
+
     /* accesors */
     public function scopeMonth($query)
     {
