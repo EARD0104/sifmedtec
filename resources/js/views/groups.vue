@@ -68,6 +68,7 @@
                                         <span v-else class="badge badge-info">Inactivo</span>
                                     </td>
                                     <td>
+                                        <button @click="showPlan(group)" v-tooltip="'Ver Plan'" type="button" class="btn btn-outline-success btn-sm"><i class="fa fa-list"></i></button>
                                         <button  @click="showResults(group)" v-tooltip="'Resultados'" type="button" class="btn btn-secondary btn-sm"><i class="fa fa-clipboard-list"></i></button>
                                         <button  @click="show(group)" v-tooltip="'Evaluados'" type="button" class="btn btn-info btn-sm"><i class="fa fa-users"></i></button>
                                         <button :disabled="!group.status"  @click="edit(group)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>
@@ -243,6 +244,60 @@
                 </div>
             </div>
         </div>
+        <div class="row justify-content-center" v-if="show_plan">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            Plan de Capacitación
+                            <button type="button" @click="showGroups" v-tooltip="'Regresar'" class="btn btn-link btn-sm float-right"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</button>
+                        </h5>
+
+
+                    </div>
+
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Grupo</dt>
+                            <dd class="col-sm-9">{{ current.id}}</dd>
+
+                            <dt class="col-sm-3">Escuela</dt>
+                            <dd class="col-sm-9">
+                                <p>{{ current.school.name }}</p>
+                                <p>{{ current.school.city.name}}, {{current.school.city.department.name}} </p>
+                            </dd>
+
+                            <dt class="col-sm-3">Fecha</dt>
+                            <dd class="col-sm-9">{{ current.created_at}}</dd>
+
+                            <dt class="col-sm-3 text-truncate">Mes de evaluación</dt>
+                            <dd class="col-sm-9">{{ current.month.name}}</dd>
+
+
+                        </dl>
+
+                        <div class="text-center" v-if="current.themes.lenght > 0">
+                            <button @click="makePlan" type="buttom" class="btn btn-primary btn-large">Crear Plan de Capacitación</button>
+                        </div>
+                        <h3 v-else class="text-center">Temario</h3>
+                        <ul class="list-unstyled" v-for="area in areas" :key="area.id">
+
+                            <li><strong>{{ area.name}}</strong>
+                                <ul>
+                                    <li v-for="theme in current.themes" :key="theme.id" v-if="theme.area_id == area.id" >{{ theme.name}}
+                                        <ul v-if=" theme.description != null">
+                                            <li>{{ theme.description }}</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <modal v-show="showAddModal"  title="Formulario de creación de grupo a evaluar"  size="modal-md">
             <form class="form">
                 <div class="form-group">
@@ -259,7 +314,6 @@
             <button @click="showAddModal = false" slot="btnCancel" type="button"   class="btn btn-link">Cancelar</button>
             <button @click="store" slot="btnSave" type="button"  class="btn btn-primary">Guardar</button>
         </modal>
-
         <modal v-show="showEditModal"  title="Formulario de edición de grupo a evaluar"  size="modal-md">
             <form class="form">
                 <div class="form-group">
@@ -288,6 +342,8 @@
 </template>
 <script>
     import Group from '../models/Group';
+    import Area from '../models/Area';
+    import GroupTheme from '../models/GroupTheme';
     import Month from '../models/Month';
     import School from '../models/School';
     import vSelect from 'vue-select';
@@ -301,6 +357,7 @@
                 show_groups : true,
                 show_groups_details : false,
                 show_groups_results: false,
+                show_plan: false,
                 showAddModal:false,
                 showEditModal:false,
                 showDestroyModal:false,
@@ -312,7 +369,9 @@
                 current:{},
                 filter:{},
                 pagination:[],
-                groups:[]
+                groups:[],
+                themes:[],
+                areas:[]
             }
         },
         created(){
@@ -323,22 +382,33 @@
             loadData(){
                 School.get({}, data=> { this.schools = data.data});
                 Month.get({}, data=> { this.months = data.data});
+                Area.get({}, data=> { this.areas = data.data});
             },
             show(group){
+                this.show_plan           = false;
                 this.show_groups_results = false;
                 this.show_groups         = false;
                 this.show_groups_details = true;
                 this.current             = group;
             },
             showGroups(){
+                this.show_plan           = false;
                 this.show_groups_results = false;
                 this.show_groups_details = false;
                 this.show_groups         = true;
             },
             showResults(group){
+                this.show_plan           = false;
                 this.show_groups         = false;
                 this.show_groups_details = false;
                 this.show_groups_results = true;
+                this.current             = group;
+            },
+            showPlan(group){
+                this.show_plan           = true;
+                this.show_groups         = false;
+                this.show_groups_details = false;
+                this.show_groups_results = false;
                 this.current             = group;
             },
             index(page = 1) {
@@ -404,6 +474,13 @@
                 this.filter = {};
                 this.index();
             },
+            makePlan(){
+                GroupTheme.store(this.current.id, this.create, data => {
+                    this.$toastr.s("Plan creado exitosamente.");
+                    this.index();
+                    this.errors = [];
+                }, errors => this.errors = errors);
+            }
         }
     }
 </script>

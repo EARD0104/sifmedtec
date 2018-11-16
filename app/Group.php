@@ -4,6 +4,7 @@ namespace sifmedtec;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Group extends Model
 {
@@ -23,6 +24,11 @@ class Group extends Model
     public function evaluations()
     {
         return $this->hasMany(Evaluation::class);
+    }
+
+    public function themes()
+    {
+        return $this->belongsToMany(Theme::class);
     }
 
     public function getTotalAnswersAttribute()

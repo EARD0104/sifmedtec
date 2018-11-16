@@ -45,7 +45,10 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                         @else
-                        <li class="nav-item dropdown">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/groups" >Gestion de grupos</a>
+                        </li>
+                       {{--  <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Administración de grupos <span class="caret"></span>
                             </a>
@@ -61,7 +64,7 @@
                                     Planes de capacitación
                                 </a>
                             </div>
-                        </li>
+                        </li> --}}
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Catalogos <span class="caret"></span>

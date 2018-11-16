@@ -26,7 +26,8 @@ class GroupResource extends JsonResource
             'answers_correct_percent' => ( $this->answers_correct / $this->total_answers)  * 100,
             'answers_incorrect'       => $this->total_answers - $this->answers_correct,
             'areas_results'           => $this->areas_results,
-            'areas'                   => GroupAreaResource::collection($this->areas_results)
+            'areas'                   => GroupAreaResource::collection($this->areas_results),
+            'themes'                  => ThemeResource::collection($this->themes),
         ];
     }
 }
