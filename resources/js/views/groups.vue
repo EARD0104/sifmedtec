@@ -6,7 +6,7 @@
                     <div class="card-header">
                         <h5 class="card-title">
                             Grupos
-                            <button type="button" @click="showAddModal = true" v-tooltip="'Agregar'" class="btn btn-primary btn-sm float-right"><i class="fa fa-plus"></i></button>
+                            <button v-if="is_admin == 1" type="button" @click="showAddModal = true" v-tooltip="'Agregar'" class="btn btn-primary btn-sm float-right"><i class="fa fa-plus"></i></button>
                         </h5>
                     </div>
 
@@ -38,9 +38,9 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="">
+                            <div class="" >
                                 <br>
-                                <button type="button" @click="index" class="btn btn-primary btn-lg"><span class="fa fa-search"></span></button>
+                                <button  type="button" @click="index" class="btn btn-primary btn-lg"><span class="fa fa-search"></span></button>
                             </div>
 
                         </div>
@@ -71,9 +71,10 @@
                                         <button @click="showPlan(group)" v-tooltip="'Ver Plan'" type="button" class="btn btn-outline-success btn-sm"><i class="fa fa-list"></i></button>
                                         <button  @click="showResults(group)" v-tooltip="'Resultados'" type="button" class="btn btn-secondary btn-sm"><i class="fa fa-clipboard-list"></i></button>
                                         <button  @click="show(group)" v-tooltip="'Evaluados'" type="button" class="btn btn-info btn-sm"><i class="fa fa-users"></i></button>
-                                        <button :disabled="!group.status"  @click="edit(group)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>
-                                        <button v-if="group.status" @click="del(group)" v-tooltip="'Desactivar'"  type="button" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
-                                        <button v-if="!group.status" @click="act(group)" v-tooltip="'Activar'"  type="button" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
+
+                                        <button v-if="is_admin == 1" :disabled="!group.status"  @click="edit(group)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>
+                                        <button v-if="group.status && is_admin == 1" @click="del(group)" v-tooltip="'Desactivar'"  type="button" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i></button>
+                                        <button v-if="!group.status && is_admin == 1" @click="act(group)" v-tooltip="'Activar'"  type="button" class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -351,6 +352,7 @@
 
 
     export default{
+        props:['is_admin'],
         components: {Paginator, vSelect},
         data(){
             return {
