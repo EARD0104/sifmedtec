@@ -48,66 +48,51 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/groups" >Gestion de grupos</a>
                         </li>
-                       {{--  <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Administración de grupos <span class="caret"></span>
-                            </a>
+                        @if(auth()->user()->isAdmin())
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Catalogos <span class="caret"></span>
+                                </a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/groups" >
-                                    Gestion de grupos
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/departments" >
+                                        Departamentos
+                                    </a>
+                                    <a class="dropdown-item" href="/cities" >
+                                        Municipios
+                                    </a>
+                                    <a class="dropdown-item" href="/schools" >
+                                        Escuelas
+                                    </a>
+                                    <a class="dropdown-item" href="/areas" >
+                                        Áreas
+                                    </a>
+                                    <a class="dropdown-item" href="/questions" >
+                                        Preguntas y respuestas
+                                    </a>
+                                    <a class="dropdown-item" href="/themes" >
+                                        Temas
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Administrador <span class="caret"></span>
                                 </a>
-                                <a class="dropdown-item" href="" >
-                                    Evaluaciones
-                                </a>
-                                <a class="dropdown-item" href="" >
-                                    Planes de capacitación
-                                </a>
-                            </div>
-                        </li> --}}
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Catalogos <span class="caret"></span>
-                            </a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/departments" >
-                                    Departamentos
-                                </a>
-                                <a class="dropdown-item" href="/cities" >
-                                    Municipios
-                                </a>
-                                <a class="dropdown-item" href="/schools" >
-                                    Escuelas
-                                </a>
-                                <a class="dropdown-item" href="/areas" >
-                                    Áreas
-                                </a>
-                                <a class="dropdown-item" href="/questions" >
-                                    Preguntas y respuestas
-                                </a>
-                                <a class="dropdown-item" href="/themes" >
-                                    Temas
-                                </a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Administrador <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/users" >
-                                    Usuarios
-                                </a>
-                                <a class="dropdown-item" href="/roles" >
-                                    Roles
-                                </a>
-                                <a class="dropdown-item" href="/preferences" >
-                                    Preferencias
-                                </a>
-                            </div>
-                        </li>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/users" >
+                                        Usuarios
+                                    </a>
+                                    <a class="dropdown-item" href="/roles" >
+                                        Roles
+                                    </a>
+                                    <a class="dropdown-item" href="/preferences" >
+                                        Preferencias
+                                    </a>
+                                </div>
+                            </li>
+                        @endif
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>

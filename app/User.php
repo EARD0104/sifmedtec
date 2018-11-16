@@ -50,4 +50,14 @@ class User extends Authenticatable
             return $query->where('name', 'LIKE', '%'.request()->name.'%');
         }
     }
+
+    public function isAdmin()
+    {
+        return $this->role_id == 1;
+    }
+
+    public function isReporter()
+    {
+        return $this->role_id == 1;
+    }
 }

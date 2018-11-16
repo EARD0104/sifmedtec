@@ -22,15 +22,15 @@ Route::get('groups/{group}', 'GroupController@show');
 
 Route::middleware(['auth'])->group(function ()
 {
-    Route::view('roles', 'admin.roles');
-    Route::view('users', 'admin.users');
-    Route::view('departments', 'admin.departments');
-    Route::view('cities', 'admin.cities');
-    Route::view('areas', 'admin.areas');
-    Route::view('questions', 'admin.questions');
-    Route::view('themes', 'admin.themes');
-    Route::view('schools', 'admin.schools');
-    Route::view('preferences', 'admin.preferences');
+    Route::view('roles', 'admin.roles')->middleware('isAdmin');
+    Route::view('users', 'admin.users')->middleware('isAdmin');
+    Route::view('departments', 'admin.departments')->middleware('isAdmin');
+    Route::view('cities', 'admin.cities')->middleware('isAdmin');
+    Route::view('areas', 'admin.areas')->middleware('isAdmin');
+    Route::view('questions', 'admin.questions')->middleware('isAdmin');
+    Route::view('themes', 'admin.themes')->middleware('isAdmin');
+    Route::view('schools', 'admin.schools')->middleware('isAdmin');
+    Route::view('preferences', 'admin.preferences')->middleware('isAdmin');
     Route::view('groups', 'admin.groups');
     Route::view('password', 'admin.password');
 });
