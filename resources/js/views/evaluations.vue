@@ -7,7 +7,7 @@
                     Sistema Informatico de Medición de Capacidades Tecnologicas
                 </h1>
                 <h4 class="card-subtitle mb-2 text-muted text-center">
-                    Maestros de Educación Primaria y Básica
+                    Maestros de Educación Primaria, Básica y Diversificada
                 </h4>
                 <div class="col-md-12 offset-md-4">
                     <div>
