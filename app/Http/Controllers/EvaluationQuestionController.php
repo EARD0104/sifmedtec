@@ -11,7 +11,8 @@ class EvaluationQuestionController extends Controller
 {
     public function index()
     {
-        $areas = Area::has('questions')->get();
+        $preferences = Preference::first();
+        $areas = Area::has('questions', '>', $preferences->question_area )->get();
         return AreaEvaluationResource::collection($areas);
     }
 }
