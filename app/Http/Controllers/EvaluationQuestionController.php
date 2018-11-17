@@ -11,8 +11,7 @@ class EvaluationQuestionController extends Controller
 {
     public function index()
     {
-
-        $areas = Area::all();
+        $areas = Area::has('questions')->get();
         return AreaEvaluationResource::collection($areas);
     }
 }
