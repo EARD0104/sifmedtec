@@ -25,6 +25,6 @@ class Evaluation extends Model
         $total = $this->details->count();
         $correct = $this->details()->where('answer', 1)->get()->count();
 
-        return ($correct / $total)  * 100 ;
+        return $total > 0 ?  ($correct / $total)  * 100 : 0 ;
     }
 }
