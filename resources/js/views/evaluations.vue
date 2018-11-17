@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-muted">
-                    <button @click="next" type="button" class="btn btn-primary btn-block">Siguiente ></button>
+                    <button v-if="!answeredEmpty" @click="next" type="button" class="btn btn-primary btn-block">Siguiente ></button>
                 </div>
             </div>
         </div>
@@ -150,6 +150,10 @@ export default {
         }
     },
     computed:{
+        answeredEmpty(){
+            return _.isEmpty(this.answered);
+        },
+
         total_answers(){
             if (this.preferences) {
                 return this.areas.length * this.preferences.answers_question;
@@ -225,6 +229,7 @@ export default {
         //agregamos una respuesta a una area en especifico
         setAnswer(){
             this.areas[this.current_area].answers.push(this.answered);
+            this.answered = {};
         },
         //realizamos los calculos de los resultados
         results(){
