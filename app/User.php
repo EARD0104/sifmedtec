@@ -41,6 +41,16 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function schools()
+    {
+        return $this->belongsToMany(School::class, 'user_school');
+    }
+
+    public function school()
+    {
+        return $this->hasOne(School::class, 'user_school');
+    }
+
     /* accessors */
 
     public function scopeName($query)

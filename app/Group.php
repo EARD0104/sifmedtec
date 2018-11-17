@@ -107,4 +107,20 @@ class Group extends Model
             $q->whereBetween('created_at', [$from, $to]);
         });
     }
+
+    public function scopePermission($query)
+    {
+
+        if (auth()->user()->isAdmin()) {
+            return $query;
+        }
+
+        $schools = auth()->user()->schools->pluck('id')->toArray();
+
+        return $query->whereIn('school_id', $schools);
+
+
+
+
+    }
 }

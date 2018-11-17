@@ -24,6 +24,7 @@
                                     <td>Id</td>
                                     <td>Nombre</td>
                                     <td>Correo</td>
+                                    <td>Escuela</td>
                                     <td>Rol</td>
                                     <td></td>
                                 </tr>
@@ -33,10 +34,12 @@
                                     <td>{{ user.id}}</td>
                                     <td>{{ user.name}}</td>
                                     <td>{{ user.email}}</td>
+                                    <td>{{ user.school ? user.school.name : 'N/A'}}</td>
                                     <td>{{ user.role.name}}</td>
                                     <td>
                                         <button @click="edit(user)" v-tooltip="'Editar'" type="button" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button>
                                         <button @click="del(user)" v-tooltip="'Eliminar'"  type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                        <button @click="school(user)" v-tooltip="'Agregar Escuela'"  type="button" class="btn btn-info btn-sm"><i class="fa fa-school"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -78,6 +81,18 @@
             <button @click="showAddModal = false" slot="btnCancel" type="button"   class="btn btn-link">Cancelar</button>
             <button @click="store" slot="btnSave" type="button"  class="btn btn-primary">Guardar</button>
         </modal>
+        <modal v-show="showEditSchool"  title="Asignar a una escuela"  size="modal-md">
+            <form class="form">
+                <div class="form-check" v-for="school in schools" :key="school.id">
+                    <input class="form-check-input" type="radio" v-model="create.school"  :value="school" >
+                    <label class="form-check-label" for="exampleRadios1">
+                       {{ school.name}}
+                    </label>
+                </div>
+            </form>
+            <button @click="showEditSchool = false" slot="btnCancel" type="button"   class="btn btn-link">Cancelar</button>
+            <button @click="updateSchool" slot="btnSave" type="button"  class="btn btn-primary">Guardar Cambios</button>
+        </modal>
         <modal v-show="showEditModal"  title="Formulario de edición de roles"  size="modal-md">
             <form class="form">
                 <div class="form-group">
@@ -116,6 +131,8 @@
     </div>
 </template>
 <script>
+    import UserSchool from '../models/UserSchool';
+    import School from '../models/School';
     import Role from '../models/Role';
     import User from '../models/User';
     import Paginator from '../components/Paginator.vue';
@@ -129,6 +146,7 @@
                 showAddModal:false,
                 showEditModal:false,
                 showDestroyModal:false,
+                showEditSchool:false,
                 users:[],
                 errors:[],
                 create:{},
@@ -136,6 +154,7 @@
                 filter:{},
                 pagination:[],
                 roles:[],
+                schools:[],
             }
         },
         created(){
@@ -145,6 +164,7 @@
         methods:{
             loadData(){
                 Role.get({}, data => {this.roles = data.data;});
+                School.get({}, data => {this.schools = data.data;});
             },
             index(page = 1) {
                 let params = {
@@ -178,6 +198,10 @@
                 this.current = user;
                 this.showEditModal = true
             },
+            school(user){
+                this.current = user;
+                this.showEditSchool = true
+            },
             update(){
                 let params = {
                     name: this.current.name ? this.current.name:'',
@@ -194,6 +218,16 @@
                     this.current = {};
                     this.errors = [];
                     this.showEditModal = false;
+                }, errors => this.errors = errors);
+            },
+            updateSchool(){
+                this.create.school_id = this.create.school ? this.create.school.id:null;
+                UserSchool.update(this.current.id, this.create, data => {
+                    this.$toastr.s("Editado exitosamente.");
+                    this.index();
+                    this.current = {};
+                    this.errors = [];
+                    this.showEditSchool = false;
                 }, errors => this.errors = errors);
             },
             del(role){

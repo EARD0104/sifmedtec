@@ -18,6 +18,7 @@ Route::middleware('auth:api')->group(function() {
     Route::resource('cities', 'CityController');
     Route::resource('roles', 'RoleController');
     Route::resource('users', 'UserController');
+    Route::put('users-schools/{user}', 'UserSchoolController@update');
     Route::resource('areas', 'AreaController');
     Route::resource('themes', 'ThemeController');
     Route::resource('questions', 'QuestionController');

@@ -18,7 +18,8 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-        $groups = Group::query()->dates()->status()->school()->month()->with('school.city.department', 'month', 'evaluations', 'themes.area')->orderByDesc('id')->paginateIf();
+
+        $groups = Group::query()->permission()->dates()->status()->school()->month()->with('school.city.department', 'month', 'evaluations', 'themes.area')->orderByDesc('id')->paginateIf();
         return GroupResource::collection($groups);
     }
 
