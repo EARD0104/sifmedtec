@@ -19,7 +19,7 @@ class GroupAreaResource extends JsonResource
             'name'            => $this->name,
             'total'           => $this->total,
             'corrects'        => $this->corrects,
-            'correct_percent' => ($this->corrects / $this->total) * 100 ,
+            'correct_percent' => $this->total > 0 ? ($this->corrects / $this->total) * 100: 0 ,
             'incorrects'      => $this->total - $this->corrects,
         ];
     }
