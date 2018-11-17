@@ -277,11 +277,11 @@
 
                         </dl>
 
-                        <div class="text-center" v-if="current.themes.lenght > 0">
+                        <div class="text-center" v-if="hasThemes">
                             <button @click="makePlan" type="buttom" class="btn btn-primary btn-large">Crear Plan de Capacitación</button>
                         </div>
-                        <h3 v-else class="text-center">Temario</h3>
-                        <ul class="list-unstyled" v-for="area in areas" :key="area.id">
+                        <h3 v-else class="text-center" >Temario</h3>
+                        <ul v-if="hasThemes" class="list-unstyled" v-for="area in areas" :key="area.id">
 
                             <li><strong>{{ area.name}}</strong>
                                 <ul>
@@ -379,6 +379,11 @@
         created(){
             this.loadData();
             this.index();
+        },
+        computed:{
+            hasThemes(){
+                 return _.isEmpty(this.current.themes);
+            }
         },
         methods:{
             loadData(){
