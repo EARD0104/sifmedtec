@@ -281,7 +281,7 @@
                             <button @click="makePlan" type="buttom" class="btn btn-primary btn-large">Crear Plan de Capacitación</button>
                         </div>
                         <h3 v-else class="text-center" >Temario</h3>
-                        <ul v-if="hasThemes" class="list-unstyled" v-for="area in areas" :key="area.id">
+                        <ul v-if="!hasThemes" class="list-unstyled" v-for="area in areas" :key="area.id">
 
                             <li><strong>{{ area.name}}</strong>
                                 <ul>
@@ -485,6 +485,7 @@
                 GroupTheme.store(this.current.id, this.create, data => {
                     this.$toastr.s("Plan creado exitosamente.");
                     this.index();
+                    this.showGroups();
                     this.errors = [];
                 }, errors => this.errors = errors);
             }

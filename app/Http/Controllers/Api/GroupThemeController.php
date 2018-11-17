@@ -22,7 +22,7 @@ class GroupThemeController extends Controller
         //recorremos cada área
         foreach ($areas_results as $area) {
             //obtenemos el porcentaje del resultado por área
-            $percent = ($area->corrects / $area->total) * 100;
+            $percent = $area->total > 0 ? ($area->corrects / $area->total) * 100 : 0;
             $themes_quantity = 0;
             //realizamos la verificación para validar  la cantidad de temas por área a guardar
             if ($percent <= 25) {
